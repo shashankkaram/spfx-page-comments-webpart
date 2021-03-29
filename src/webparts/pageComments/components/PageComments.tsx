@@ -10,6 +10,7 @@ import { PrimaryButton } from 'office-ui-fabric-react';
 import { Pivot, PivotItem } from 'office-ui-fabric-react/lib/Pivot';
 import { FilePicker, IFilePickerResult } from '@pnp/spfx-controls-react/lib/FilePicker';
 import { RichText } from "@pnp/spfx-controls-react/lib/RichText";
+import { UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 
 export interface IPageCommentsState {
   comments: IPageComment[];
@@ -31,7 +32,8 @@ const classNames = mergeStyleSets({
   },
   richText: {
     borderStyle: "solid",
-    borderWidth: 1
+    borderWidth: 1,
+    position:"relative"
   }
 });
 
@@ -115,18 +117,26 @@ export default class PageComments extends React.Component<IPageCommentsProps, IP
         ],
         activityPersonas: [{ imageUrl: "/_layouts/15/userphoto.aspx?size=L&username=" + comment.userEmail }],
         comments: [
-          <span dangerouslySetInnerHTML={{ __html: comment.comment }}></span>,
-          comment.attachmentFilename.length > 0 ? <a target="_blank" href={comment.attachmentUrl} style={{
-            textDecoration:"none"
-          }}>{comment.attachmentFilename}</a> : undefined
-          // <img src={comment.attachmentUrl} ></img>
+          <span dangerouslySetInnerHTML={{ __html: comment.comment }} style={{fontSize:14}}></span>,
+          comment.attachmentFilename.length > 0 ? 
+          // <a target="_blank" href={comment.attachmentUrl} style={{
+          //   textDecoration:"none"
+          // }}>{comment.attachmentFilename}</a> 
+           <img src={comment.attachmentUrl} width="400px" height="250px" style={{cursor:'pointer'}}
+            onClick={() => window.open(comment.attachmentUrl, '_blank')} ></img>
+          // <a href={comment.attachmentUrl} target="_blank" style={{
+          //   width:400,height:250,backgroundImage:comment.attachmentUrl
+          // }}></a>
+          : undefined
         ]
       }
     }) : [];
     let numberOfComments = commentActivityItems.length;
+    // display: inline-block; width: 50px; height; 50px; background-image: url('path/to/image.jpg');
     return (
       <div className={styles.pageComments}>
-        <h2>{numberOfComments > 0 ? numberOfComments : ""} {numberOfComments > 1 ? " Comments" : " Comment"}</h2>
+        {/* <h2>{numberOfComments > 0 ? numberOfComments : ""} {numberOfComments > 1 ? " Comments" : " Comment"}</h2> */}
+        <h2>Add your journal entry in the text box below</h2>
         <div>
           <RichText key={comments.length}
             value={userComment}
