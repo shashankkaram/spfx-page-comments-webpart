@@ -1,11 +1,14 @@
 import { WebPartContext } from "@microsoft/sp-webpart-base";
+import "@pnp/polyfill-ie11";
 import { sp } from '@pnp/sp/presets/all';
 import { IPageComment } from "../entities/IPageComment";
 import { IFilePickerResult } from '@pnp/spfx-controls-react/lib/FilePicker';
 
+
 export class PageCommentService {
     constructor(private context: WebPartContext) {
         sp.setup({
+            ie11: true,
             spfxContext: this.context
         });
     }

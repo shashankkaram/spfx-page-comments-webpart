@@ -11,6 +11,8 @@ import * as strings from 'PageCommentsWebPartStrings';
 import PageComments from './components/PageComments';
 import { IPageCommentsProps } from './components/IPageCommentsProps';
 
+import "@pnp/polyfill-ie11";
+
 import { PageCommentService } from "../pageComments/services/PageCommentService";
 import { sp } from '@pnp/sp';
 
@@ -25,6 +27,7 @@ export default class PageCommentsWebPart extends BaseClientSideWebPart<IPageComm
   public onInit(): Promise<void> {
     return super.onInit().then(_ => {
       sp.setup({
+        ie11: true,
         spfxContext: this.context
       });
       this._services = new PageCommentService(this.context);
